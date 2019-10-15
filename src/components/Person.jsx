@@ -1,18 +1,31 @@
 import React, { Component, Fragment } from "react";
 
-import ModalCliente from "./ModalCliente";
-import CustomerService from "./../services/CustomerServices";
+import ModalCliente from "./ModalPerson";
+import PersonService from "../services/PersonService";
+import { Button } from "reactstrap";
 
-class Clientes extends Component {
+// For moment JS
+import moment from "moment";
+import localization from './../../node_modules/moment/locale/es';
+
+// Setting spanish as global local for moment js
+moment.locale('es', localization);
+
+class Person extends Component {
   state = {
     values: []
   };
 
   async componentDidMount() {
-    const values  = await CustomerService.getCustomers();
+    const values = await PersonService.getPersons();
     this.setState({ values });
     console.log("State", this.state);
   }
+
+  // async componentDidUpdate() {
+  //   const values = await PersonService.getPersons();
+  //   this.setState({ values });
+  // }
 
   render() {
     const { values } = this.state;
@@ -23,7 +36,7 @@ class Clientes extends Component {
             <div className="col-md-12 center-block text-center py-5">
               <div className="card py-5 px-5 table-responsive">
                 {/* Modal */}
-                <ModalCliente buttonLabel="Agregar" className='info'/>
+                <ModalCliente />
                 {/* End modal */}
                 <br />
 
@@ -32,9 +45,9 @@ class Clientes extends Component {
                 </h2>
                 <br />
                 <table
-                  id="example"
+                  id="dtPersonas"
                   className="table table-striped table-bordered"
-                  // style={{ width: "100%" }}
+                  style={{ width: "100%" }}
                 >
                   <thead>
                     <tr>
@@ -44,17 +57,29 @@ class Clientes extends Component {
                       <th>Fecha Nacimiento</th>
                       <th>Dirección</th>
                       <th>NIT</th>
+                      <th>Modificar</th>
+                      <th>Eliminar</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {values.map(cliente => (
-                      <tr keys={cliente.id}>
-                        <td>{cliente.persona.nombres}</td>
-                        <td>{cliente.persona.apellidos}</td>
-                        <td>{cliente.persona.sexo}</td>
-                        <td>{cliente.persona.fechaNacimiento}</td>
-                        <td>{cliente.persona.direccion}</td>
-                        <td>{cliente.persona.nit}</td>
+                    {values.map(person => (
+                      <tr key={person.id}>
+                        <td>{person.nombres}</td>
+                        <td>{person.apellidos}</td>
+                        <td>{person.sexo}</td>
+                        <td>
+                          {moment(person.fechaNacimiento).format(
+                            "DD/MMM/YYYY"
+                          )}
+                        </td>
+                        <td>{person.direccion}</td>
+                        <td>{person.nit}</td>
+                        <td>
+                          <Button color="info">Actualizar</Button>
+                        </td>
+                        <td>
+                          <Button color="danger">Eliminar</Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -66,6 +91,8 @@ class Clientes extends Component {
                       <th>Fecha Nacimiento</th>
                       <th>Dirección</th>
                       <th>NIT</th>
+                      <th>Modificar</th>
+                      <th>Eliminar</th>
                     </tr>
                   </tfoot>
                 </table>
@@ -83,4 +110,4 @@ class Clientes extends Component {
   }
 }
 
-export default Clientes;
+export default Person;

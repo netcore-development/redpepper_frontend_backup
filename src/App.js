@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import Clientes from './components/Clientes';
+import Person from './components/Person';
 
 function App() {
   return (
     <Fragment>
-      <Clientes />
+      <Person />
     </Fragment>
   );
 }

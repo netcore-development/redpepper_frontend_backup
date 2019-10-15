@@ -6,7 +6,7 @@ class CustomerService {
 
   async getCustomers() {
     const response = await http.get(apiEndpoint);
-    console.log(response.data);
+    console.log("Desde Customer Service", response.data);
     return response.data;
   }
 
