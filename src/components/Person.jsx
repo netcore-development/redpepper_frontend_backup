@@ -13,12 +13,12 @@ moment.locale('es', localization);
 
 class Person extends Component {
   state = {
-    values: []
+    persons: []
   };
 
   async componentDidMount() {
-    const values = await PersonService.getPersons();
-    this.setState({ values });
+    const persons = await PersonService.getPersons();
+    this.setState({ persons });
     console.log("State", this.state);
   }
 
@@ -27,8 +27,16 @@ class Person extends Component {
   //   this.setState({ values });
   // }
 
+
+  async deletePerson (id) { // <-- declare id parameter
+    PersonService.deletePerson(id);
+
+  }
+  
+
+
   render() {
-    const { values } = this.state;
+    const { persons } = this.state;
     return (
       <Fragment>
         <div id="contenedorClientes" className="container">
@@ -41,7 +49,7 @@ class Person extends Component {
                 <br />
 
                 <h2 style={{ textDecoration: "underline" }}>
-                  Lista de Clientes
+                  Lista de Personas
                 </h2>
                 <br />
                 <table
@@ -62,7 +70,7 @@ class Person extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {values.map(person => (
+                    {persons.map(person => (
                       <tr key={person.id}>
                         <td>{person.nombres}</td>
                         <td>{person.apellidos}</td>
@@ -78,7 +86,7 @@ class Person extends Component {
                           <Button color="info">Actualizar</Button>
                         </td>
                         <td>
-                          <Button color="danger">Eliminar</Button>
+                          <Button color="danger" onClick={()=> this.deletePerson(person.id)}>Eliminar</Button>
                         </td>
                       </tr>
                     ))}

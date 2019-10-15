@@ -40,6 +40,7 @@ const ModalCliente = () => {
     e.preventDefault();
 
     PersonService.createPerson(person);
+    
   };
 
   const toggle = () => setModal(!modal);

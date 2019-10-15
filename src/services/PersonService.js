@@ -10,12 +10,18 @@ class PersonService {
     return response.data;
   }
 
-  async createPerson(persona) {
-    await http.post(apiEndpoint, persona).then(response => {
+  async createPerson(person) {
+    await http.post(apiEndpoint, person).then(response => {
       console.log(response);
       this.getPersons();
     });
   }
-}
 
+  async deletePerson(id) {
+    await http.delete(`${apiEndpoint}/${id}`).then(response => {
+      console.log("Eliminado",  response);
+      this.getPersons();
+    });
+  }
+}
 export default new PersonService();
