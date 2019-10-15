@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
-import clienteService from "../services/clienteService";
+
+import ModalCliente from "./ModalCliente";
+import CustomerService from "./../services/CustomerServices";
 
 class Clientes extends Component {
   state = {
@@ -7,7 +9,7 @@ class Clientes extends Component {
   };
 
   async componentDidMount() {
-    const { data: values } = await clienteService.getClientes();
+    const values  = await CustomerService.getCustomers();
     this.setState({ values });
     console.log("State", this.state);
   }
@@ -19,7 +21,12 @@ class Clientes extends Component {
         <div id="contenedorClientes" className="container">
           <div className="row">
             <div className="col-md-12 center-block text-center py-5">
-              <div className="card py-5 px-5">
+              <div className="card py-5 px-5 table-responsive">
+                {/* Modal */}
+                <ModalCliente buttonLabel="Agregar" className='info'/>
+                {/* End modal */}
+                <br />
+
                 <h2 style={{ textDecoration: "underline" }}>
                   Lista de Clientes
                 </h2>
@@ -62,10 +69,15 @@ class Clientes extends Component {
                     </tr>
                   </tfoot>
                 </table>
-              </div>{/* .card */}
-            </div>{/* /col-md-12  donde va  contenido card */}
-          </div>{/* .row */}
-        </div>{/*  .container */}
+              </div>
+              {/* .card */}
+            </div>
+            {/* /col-md-12  donde va  contenido card */}
+
+            {/* .row */}
+          </div>
+          {/*  .container */}
+        </div>
       </Fragment>
     );
   }
