@@ -3,13 +3,14 @@ import React, { Component, Fragment } from "react";
 import ModalCliente from "./ModalPerson";
 import PersonService from "../services/PersonService";
 import { Button } from "reactstrap";
+import { FaUserEdit, FaTimes } from "react-icons/fa";
 
 // For moment JS
 import moment from "moment";
-import localization from './../../node_modules/moment/locale/es';
+import localization from "./../../node_modules/moment/locale/es";
 
 // Setting spanish as global local for moment js
-moment.locale('es', localization);
+moment.updateLocale("es", localization);
 
 class Person extends Component {
   state = {
@@ -27,13 +28,10 @@ class Person extends Component {
   //   this.setState({ values });
   // }
 
-
-  async deletePerson (id) { // <-- declare id parameter
+  async deletePerson(id) {
+    // <-- declare id parameter
     PersonService.deletePerson(id);
-
   }
-  
-
 
   render() {
     const { persons } = this.state;
@@ -43,15 +41,11 @@ class Person extends Component {
           <div className="row">
             <div className="col-md-12 center-block text-center py-5">
               <div className="card py-5 px-5 table-responsive">
-                {/* Modal */}
-                <ModalCliente />
-                {/* End modal */}
-                <br />
-
                 <h2 style={{ textDecoration: "underline" }}>
                   Lista de Personas
                 </h2>
                 <br />
+                <ModalCliente />
                 <table
                   id="dtPersonas"
                   className="table table-striped table-bordered"
@@ -76,17 +70,22 @@ class Person extends Component {
                         <td>{person.apellidos}</td>
                         <td>{person.sexo}</td>
                         <td>
-                          {moment(person.fechaNacimiento).format(
-                            "DD/MMM/YYYY"
-                          )}
+                          {moment(person.fechaNacimiento).format("DD/MMM/YYYY")}
                         </td>
                         <td>{person.direccion}</td>
                         <td>{person.nit}</td>
                         <td>
-                          <Button color="info">Actualizar</Button>
+                          <Button color="info">
+                            <FaUserEdit size="20" />
+                          </Button>
                         </td>
                         <td>
-                          <Button color="danger" onClick={()=> this.deletePerson(person.id)}>Eliminar</Button>
+                          <Button
+                            color="danger"
+                            onClick={() => this.deletePerson(person.id)}
+                          >
+                            <FaTimes size="20" />
+                          </Button>
                         </td>
                       </tr>
                     ))}
