@@ -13,10 +13,8 @@ import {
 } from "reactstrap";
 
 import InputMask from "react-input-mask";
-// import CustomerService from "./../services/CustomerService";
-import PersonService from "../services/PersonService";
 
-const ModalCliente = () => {
+const ModalCliente = ({crearPersona}) => {
   const [modal, setModal] = useState(false);
   const [person, setPerson] = useState({
     nombres: "",
@@ -38,7 +36,7 @@ const ModalCliente = () => {
 
   const agregarPersona = e => {
     e.preventDefault();
-    PersonService.createPerson(person);
+    crearPersona(person);
     
   };
 

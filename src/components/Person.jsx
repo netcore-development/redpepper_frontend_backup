@@ -2,39 +2,58 @@ import React, { Component, Fragment } from "react";
 
 import ModalCliente from "./ModalPerson";
 import PersonService from "../services/PersonService";
-import { Button } from "reactstrap";
-import { FaUserEdit, FaTimes } from "react-icons/fa";
 
-// For moment JS
-import moment from "moment";
-import localization from "./../../node_modules/moment/locale/es";
-
-// Setting spanish as global local for moment js
-moment.updateLocale("es", localization);
+import PersonTable from "./PersonTable";
 
 class Person extends Component {
-  state = {
-    persons: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      persons: []
+    };
 
-  async componentDidMount() {
+    this.crearPersona = this.crearPersona.bind(this);
+    this.deletePerson = this.deletePerson.bind(this);
+  }
+
+  async componentDidMount() {}
+
+  async UNSAFE_componentWillMount() {
     const persons = await PersonService.getPersons();
     this.setState({ persons });
     console.log("State", this.state);
   }
 
-  async deletePerson(id) {
+  // async componentDidUpdate() {
+  //   const persons = await PersonService.getPersons();
+  //   this.setState({ persons });
+  // }
+
+  async crearPersona(persona) {
+    console.log("Crear Persona", persona);
+    await PersonService.createPerson(persona);
+    console.log("This", this);
+
+    const personas = await PersonService.getPersons();
+    if (personas) {
+      this.setState({
+        persons: personas
+      });
+    }
+
+    // this.forceUpdate();
+  }
+
+  deletePerson(id) {
     const r = window.confirm("Desea eliminar el registro seleccionado?");
-    if(r) {
+    if (r) {
       PersonService.deletePerson(id);
       const newPersons = [...this.state.persons];
       const persons = newPersons.filter(person => person.id !== id);
-      this.setState({persons});
-  
+      this.setState({ persons });
     } else {
       return;
     }
-    
   }
 
   render() {
@@ -49,7 +68,7 @@ class Person extends Component {
                   Lista de Personas
                 </h2>
                 <br />
-                <ModalCliente />
+                <ModalCliente crearPersona={this.crearPersona} />
                 <table
                   id="dtPersonas"
                   className="table table-striped table-bordered"
@@ -69,31 +88,12 @@ class Person extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {persons.map(person => (
-                      <tr key={person.id}>
-                        <td>{person.id}</td>
-                        <td>{person.nombres}</td>
-                        <td>{person.apellidos}</td>
-                        <td>{person.sexo}</td>
-                        <td>
-                          {moment(person.fechaNacimiento).format("DD/MMM/YYYY")}
-                        </td>
-                        <td>{person.direccion}</td>
-                        <td>{person.nit}</td>
-                        <td>
-                          <Button color="info">
-                            <FaUserEdit size="20" />
-                          </Button>
-                        </td>
-                        <td>
-                          <Button
-                            color="danger"
-                            onClick={() => this.deletePerson(person.id)}
-                          >
-                            <FaTimes size="20" />
-                          </Button>
-                        </td>
-                      </tr>
+                    {persons.map((person) => (
+                      <PersonTable
+                        key={person.id}
+                        person={person}
+                        deletePerson={this.deletePerson}
+                      />
                     ))}
                   </tbody>
                   <tfoot>

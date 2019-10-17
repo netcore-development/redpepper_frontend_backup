@@ -6,15 +6,15 @@ class PersonService {
 
   async getPersons() {
     const response = await http.get(apiEndpoint);
-    console.log("Desde Persona Service", response.data);
+    console.log("Desde Obtener", response.data);
     return response.data;
   }
 
   async createPerson(person) {
-    await http.post(apiEndpoint, person).then(response => {
-      console.log(response);
-      this.getPersons();
-    });
+    const response =  await http.post(apiEndpoint, person);
+    console.log("Desde crear", response);
+      // this.getPersons();
+   
   }
 
   async deletePerson(id) {
