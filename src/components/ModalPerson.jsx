@@ -38,7 +38,6 @@ const ModalCliente = () => {
 
   const agregarPersona = e => {
     e.preventDefault();
-
     PersonService.createPerson(person);
     
   };
@@ -47,6 +46,7 @@ const ModalCliente = () => {
 
   return (
     <div>
+      
       <Button color="primary" onClick={toggle}>
         Agregar
       </Button>

@@ -23,14 +23,18 @@ class Person extends Component {
     console.log("State", this.state);
   }
 
-  // async componentDidUpdate() {
-  //   const values = await PersonService.getPersons();
-  //   this.setState({ values });
-  // }
-
   async deletePerson(id) {
-    // <-- declare id parameter
-    PersonService.deletePerson(id);
+    const r = window.confirm("Desea eliminar el registro seleccionado?");
+    if(r) {
+      PersonService.deletePerson(id);
+      const newPersons = [...this.state.persons];
+      const persons = newPersons.filter(person => person.id !== id);
+      this.setState({persons});
+  
+    } else {
+      return;
+    }
+    
   }
 
   render() {
@@ -53,6 +57,7 @@ class Person extends Component {
                 >
                   <thead>
                     <tr>
+                      <th>ID</th>
                       <th>Nombre</th>
                       <th>Apellidos</th>
                       <th>Sexo</th>
@@ -66,6 +71,7 @@ class Person extends Component {
                   <tbody>
                     {persons.map(person => (
                       <tr key={person.id}>
+                        <td>{person.id}</td>
                         <td>{person.nombres}</td>
                         <td>{person.apellidos}</td>
                         <td>{person.sexo}</td>
@@ -92,6 +98,7 @@ class Person extends Component {
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th>ID</th>
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Sexo</th>
